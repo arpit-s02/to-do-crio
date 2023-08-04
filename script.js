@@ -7,12 +7,19 @@ const addTasksToDOM = (tasks) => {
     const li = document.createElement("li");
 
     li.innerHTML = `
-    <input type="checkbox" name="task-${idx}" id="task-${idx}" />
-    <label for="task-${idx}"> ${task} </label>
+    <input type="checkbox" name="task-${idx}" id="task-${idx}" data-task = "${task}">
+    <label for="task-${idx}">${task}</label>
     `;
 
     tasksList.append(li);
   });
 };
 
-export { addTasksToDOM };
+const addStyleToCompletedTasks = (completedTasks) => {
+  completedTasks.forEach((task) => {
+    const checkbox = document.querySelector(`input[data-task = "${task}"]`);
+    checkbox.checked = true;
+  });
+};
+
+export { addTasksToDOM, addStyleToCompletedTasks };

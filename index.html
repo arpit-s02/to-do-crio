@@ -25,43 +25,114 @@
       </form>
 
       <div class="clearAllBtn">
-        <button>Clear All</button>
+        <button onclick="clearAllTasks()">Clear All</button>
       </div>
 
       <div class="tasks-container">
-        <ul id="tasksList">
-          <!-- <li>
-            <input type="checkbox" name="" id="t1" />
-            <label for="t1"> Complete to do</label>
-          </li>
-          <li>
-            <input type="checkbox" name="" id="t2" />
-            <label for="t2"> Complete Qtrip </label>
-          </li> -->
-        </ul>
+        <ul onclick="markAsComplete(event)" id="tasksList"></ul>
       </div>
     </main>
 
     <script type="module">
-      import { addTasksToDOM } from "./script.js";
-      let tasks = [];
+      import { addTasksToDOM, addStyleToCompletedTasks } from "./script.js";
+
+      // getting all tasks and completed tasks from local storage if present
+      const savedTasks = JSON.parse(localStorage.getItem("tasks"));
+      const savedCompletedTasks = JSON.parse(
+        localStorage.getItem("completedTasks")
+      );
+
+      // initializing tasks and completed tasks array according to local storage
+      let tasks = savedTasks ? savedTasks : [];
+      let completedTasks = savedCompletedTasks ? savedCompletedTasks : [];
+
+      // adding all tasks to DOM
+      addTasksToDOM(tasks);
+
+      // checking tasks which are marked as completed
+      addStyleToCompletedTasks(completedTasks);
 
       const addTodo = (e) => {
         e.preventDefault();
 
         const input = document.querySelector("#toDoInput");
 
+        // getting input value
         const newTask = input.value;
 
         if (newTask) {
+          // push task to the new task
           tasks.push(newTask);
+
+          // add tasks to DOM
           addTasksToDOM(tasks);
+
+          // check the tasks which are marked as completed
+          addStyleToCompletedTasks(completedTasks);
+
+          // clear the input and focus on it
           input.value = "";
           input.focus();
+
+          // add updated tasks array to local storage
+          localStorage.setItem("tasks", JSON.stringify(tasks));
+        }
+      };
+
+      const clearAllTasks = () => {
+        // clear the tasks and completedTasks array
+        tasks = [];
+        completedTasks = [];
+
+        // pass empty tasks array to addTasksToDOM so that tasks are cleared from the DOM
+        addTasksToDOM(tasks);
+
+        // add updated tasks and completedTasks array to the local storage
+        localStorage.removeItem("tasks");
+        localStorage.removeItem("completedTasks");
+      };
+
+      const markAsComplete = (e) => {
+        // if checkbox or label is clicked
+        if (e.target.type === "checkbox") {
+          // get the clicked checkbox
+          const id = e.target.id;
+          const checkBox = document.querySelector(`input[id = ${id}]`);
+
+          // get the corresponding label
+          const label = document.querySelector(
+            `label[for = ${id}]`
+          ).textContent;
+
+          // if checkbox is checked
+          if (checkBox.checked) {
+            // add correspoding label to the completedTasks array
+            completedTasks.push(label);
+
+            // add updated completedTasks array to the local storage
+            localStorage.setItem(
+              "completedTasks",
+              JSON.stringify(completedTasks)
+            );
+          }
+
+          // else if checkbox is unchecked
+          else {
+            // remove corresponding label from the completedTasks array
+            completedTasks = completedTasks.filter((task) => task !== label);
+
+            // add updated completedTasks array to the local storage
+            localStorage.setItem(
+              "completedTasks",
+              JSON.stringify(completedTasks)
+            );
+          }
         }
       };
 
       window.addTodo = addTodo;
+      window.clearAllTasks = clearAllTasks;
+      window.markAsComplete = markAsComplete;
     </script>
   </body>
 </html>
