@@ -7,5 +7,61 @@
     <title>Document</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body></body>
+  <body>
+    <header>
+      <h1>Todo</h1>
+      <h3>Friday, August 04, 2023</h3>
+    </header>
+
+    <main>
+      <form onsubmit="addTodo(event)" class="input-box">
+        <input
+          type="text"
+          name="toDoInput"
+          id="toDoInput"
+          placeholder="New To do..."
+        />
+        <button type="submit" class="addToDoBtn">+</button>
+      </form>
+
+      <div class="clearAllBtn">
+        <button>Clear All</button>
+      </div>
+
+      <div class="tasks-container">
+        <ul id="tasksList">
+          <!-- <li>
+            <input type="checkbox" name="" id="t1" />
+            <label for="t1"> Complete to do</label>
+          </li>
+          <li>
+            <input type="checkbox" name="" id="t2" />
+            <label for="t2"> Complete Qtrip </label>
+          </li> -->
+        </ul>
+      </div>
+    </main>
+
+    <script type="module">
+      import { addTasksToDOM } from "./script.js";
+      let tasks = [];
+
+      const addTodo = (e) => {
+        e.preventDefault();
+
+        const input = document.querySelector("#toDoInput");
+
+        const newTask = input.value;
+
+        if (newTask) {
+          tasks.push(newTask);
+          addTasksToDOM(tasks);
+          input.value = "";
+          input.focus();
+        }
+      };
+
+      window.addTodo = addTodo;
+    </script>
+  </body>
 </html>
