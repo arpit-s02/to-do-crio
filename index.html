@@ -10,7 +10,7 @@
   <body>
     <header>
       <h1>Todo</h1>
-      <h3>Friday, August 04, 2023</h3>
+      <h3></h3>
     </header>
 
     <main>
@@ -34,22 +34,29 @@
     </main>
 
     <script type="module">
-      import { addTasksToDOM, addStyleToCompletedTasks } from "./script.js";
+      import {
+        addTasksToDOM,
+        addStyleToCompletedTasks,
+        addDate,
+      } from "./script.js";
 
-      // getting all tasks and completed tasks from local storage if present
+      // get all tasks and completed tasks from local storage if present
       const savedTasks = JSON.parse(localStorage.getItem("tasks"));
       const savedCompletedTasks = JSON.parse(
         localStorage.getItem("completedTasks")
       );
 
-      // initializing tasks and completed tasks array according to local storage
+      // initialize tasks and completed tasks array according to local storage
       let tasks = savedTasks ? savedTasks : [];
       let completedTasks = savedCompletedTasks ? savedCompletedTasks : [];
 
-      // adding all tasks to DOM
+      // add date
+      addDate();
+
+      // add all tasks to DOM
       addTasksToDOM(tasks);
 
-      // checking tasks which are marked as completed
+      // check tasks which are marked as completed
       addStyleToCompletedTasks(completedTasks);
 
       const addTodo = (e) => {
@@ -57,7 +64,7 @@
 
         const input = document.querySelector("#toDoInput");
 
-        // getting input value
+        // gett input value
         const newTask = input.value;
 
         if (newTask) {

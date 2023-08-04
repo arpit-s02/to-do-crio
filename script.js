@@ -1,3 +1,16 @@
+const addDate = () => {
+  const dateHeading = document.querySelector("header h3");
+  const options = {
+    weekday: "long",
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  };
+  const date = new Date().toLocaleDateString("en-US", options);
+
+  dateHeading.textContent = date;
+};
+
 const addTasksToDOM = (tasks) => {
   const tasksList = document.querySelector("#tasksList");
 
@@ -22,4 +35,4 @@ const addStyleToCompletedTasks = (completedTasks) => {
   });
 };
 
-export { addTasksToDOM, addStyleToCompletedTasks };
+export { addTasksToDOM, addStyleToCompletedTasks, addDate };
